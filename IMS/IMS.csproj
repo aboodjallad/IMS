@@ -12,10 +12,23 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	<PackageReference Include="Npgsql" Version="8.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.2.0" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+
+
+
+
+
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\" />
-    <Folder Include="Applecation\" />
-    <Folder Include="Database\" />
+	  <Folder Include="Applectaion\" />
   </ItemGroup>
+	
+
 </Project>
