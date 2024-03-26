@@ -14,19 +14,29 @@ namespace IMS
     {
         static void Main(string[] args)
         {
-            // Build configuration
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
+            Console.WriteLine("Enter username:");
+            var username = Console.ReadLine();
+            Console.WriteLine("Enter password:");
+            var password = Console.ReadLine();
 
-            // Get connection string
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            RegisterUser(username, password);
 
-            using (var context = new ApplicationDbContext(connectionString))
+
+            Console.WriteLine("Enter username:");
+            var username = Console.ReadLine();
+            Console.WriteLine("Enter password:");
+            var password = Console.ReadLine();
+
+            bool isValidUser = ValidateLogin(username, password);
+
+            if (isValidUser)
             {
-                // Example usage of the DbContext
-                // Ensure you handle exceptions and logging as needed
-                Console.WriteLine("ApplicationDbContext initialized successfully.");
+                Console.WriteLine("Login successful.");
+                // Proceed with authenticated user operations here...
+            }
+            else
+            {
+                Console.WriteLine("Login failed. Invalid username or password.");
             }
         }
     }

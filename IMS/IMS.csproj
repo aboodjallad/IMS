@@ -10,6 +10,11 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Applectaion\**" />
+    <EmbeddedResource Remove="Applectaion\**" />
+    <None Remove="Applectaion\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	<PackageReference Include="Npgsql" Version="8.0" />
@@ -24,10 +29,6 @@
 
 
 
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="API\" />
-	  <Folder Include="Applectaion\" />
   </ItemGroup>
 	
 
