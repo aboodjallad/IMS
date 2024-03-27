@@ -11,6 +11,7 @@ namespace IMS.Applecation
         public int userId { get; set; }
         public string Username { get; set; }
         public string HashedPassword { get; set; }
+        public bool Role { get; set; }
 
 
     }

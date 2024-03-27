@@ -8,6 +8,7 @@ using IMS.Applecation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
+
 namespace IMS.Database
 {
 
@@ -15,6 +16,8 @@ namespace IMS.Database
     public class ApplicationDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Good> Goods { get; set; }
+
         private readonly string _connectionString;
 
         public ApplicationDbContext(string connectionString)
