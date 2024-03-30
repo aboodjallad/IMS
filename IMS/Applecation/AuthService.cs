@@ -88,8 +88,6 @@ namespace IMS.Applecation
 
         public void Logout()
         {
-            // Implementation depends on how you manage user sessions.
-            // This could simply clear a session variable, for example.
             Console.WriteLine("User logged out successfully.");
         }
 
