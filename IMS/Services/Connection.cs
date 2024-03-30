@@ -7,27 +7,52 @@ using System.Threading.Tasks;
 using IMS.Applecation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 
-
-namespace IMS.Database
+namespace IMS.Services
 {
 
-
-    public class ApplicationDbContext : DbContext
+    public class DatabaseConnection
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Good> Goods { get; set; }
+        private static DatabaseConnection _instance;
+        private readonly NpgsqlConnection _connection;
+        private static readonly object _lock = new object();
 
-        private readonly string _connectionString;
-
-        public ApplicationDbContext(string connectionString)
+        private DatabaseConnection(string connectionString)
         {
-            _connectionString = connectionString;
+            _connection = new NpgsqlConnection(connectionString);
+            _connection.Open();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(_connectionString);
+        public static DatabaseConnection GetInstance(string connectionString)
+        {
+            
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new DatabaseConnection(connectionString);
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        public void CloseConnection()
+        {
+            if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+        }
+        public NpgsqlConnection Connection => _connection;
+
     }
+
 
 
 }

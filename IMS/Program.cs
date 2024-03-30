@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IMS.Applecation;
-using IMS.Database;
+using IMS.Services;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -14,30 +14,32 @@ namespace IMS
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter username:");
-            var username = Console.ReadLine();
-            Console.WriteLine("Enter password:");
-            var password = Console.ReadLine();
+            string connectionString = "Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123";
+            var authService = new AuthService(connectionString);
 
-            RegisterUser(username, password);
-
-
-            Console.WriteLine("Enter username:");
-            var username = Console.ReadLine();
-            Console.WriteLine("Enter password:");
-            var password = Console.ReadLine();
-
-            bool isValidUser = ValidateLogin(username, password);
-
-            if (isValidUser)
+            // Example usage:
+            // Register a new user
+            if (authService.Register("Jallad1", "aboodjallad12345", 1))
             {
-                Console.WriteLine("Login successful.");
-                // Proceed with authenticated user operations here...
+                Console.WriteLine("Registration successful.");
             }
             else
             {
-                Console.WriteLine("Login failed. Invalid username or password.");
+                Console.WriteLine("Registration failed.");
             }
+
+            // Login
+            if (authService.Login("Jallad1", "aboodjallad12345"))
+            {
+                Console.WriteLine("Login successful.");
+            }
+            else
+            {
+                Console.WriteLine("Login failed.");
+            }
+
+            // Logout
+            authService.Logout();
         }
     }
 }
