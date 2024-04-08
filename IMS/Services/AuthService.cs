@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IMS.Applecation;
 using Npgsql;
-namespace IMS.Applecation
+namespace IMS.Services
 {
 
 
@@ -91,7 +92,7 @@ namespace IMS.Applecation
             Console.WriteLine("User logged out successfully.");
         }
 
-        
+
     }
 }
 
