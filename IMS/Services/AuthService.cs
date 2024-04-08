@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using IMS.Applecation;
@@ -89,6 +90,7 @@ namespace IMS.Services
 
         public void Logout()
         {
+            
             Console.WriteLine("User logged out successfully.");
         }
 

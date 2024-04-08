@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 using IMS.Applecation;
+using System.Diagnostics;
+using System.Xml.Linq;
 namespace IMS.Services
 {
 
@@ -17,19 +19,18 @@ namespace IMS.Services
             _connectionString = connectionString;
         }
 
-        public bool AddItem(string name, int quantity, decimal price, string status)
+        public bool AddItem(string name, int quantity, decimal price)
         {
             try
             {
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
-                    const string query = "INSERT INTO InventoryItems (Name, Quantity, Price, Status) VALUES (@Name, @Description, @Quantity, @CategoryId, @Price, @Status)";
+                    const string query = "INSERT INTO goods (Name, Quantity, Price) VALUES (@Name,  @Quantity,  @Price)";
                     using (var command = new NpgsqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Name", name);
                         command.Parameters.AddWithValue("@Quantity", quantity);
                         command.Parameters.AddWithValue("@Price", price);
-                        command.Parameters.AddWithValue("@Status", status);
 
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -44,11 +45,13 @@ namespace IMS.Services
             }
         }
 
-        public void GetItems()
+        public List<Good> GetItems()
         {
+            var items = new List<Good>();
+
             using (var connection = new NpgsqlConnection(_connectionString))
             {
-                const string query = "SELECT ItemId, Name, Quantity FROM InventoryItems";
+                const string query = "SELECT id, Name, Quantity,Price FROM goods";
                 using (var command = new NpgsqlCommand(query, connection))
                 {
                     connection.Open();
@@ -56,17 +59,26 @@ namespace IMS.Services
                     {
                         while (reader.Read())
                         {
-                            int quantity = int.Parse(reader["Quantity"].ToString());
-                            string status = GetStatusBasedOnQuantity(quantity);
+                            // Create a new Item object and populate it with the data from the reader
+                            var item = new Good
+                            {
+                                GoodId = Convert.ToInt32(reader["id"]),
+                                Name = reader["Name"].ToString(),
+                                Quantity = Convert.ToInt32(reader["Quantity"]),
+                                Price = Convert.ToInt32(reader["Price"]),
+                                Status = GetStatusBasedOnQuantity(Convert.ToInt32(reader["Quantity"]))
+                            };
 
-                            Console.WriteLine($"ID: {reader["ItemId"]}, Name: {reader["Name"]}, Quantity: {quantity}, Status: {status}");
+                            // Add the new item to the list
+                            items.Add(item);
                         }
                     }
                 }
             }
+            return items; // Return the list of items
         }
-
-        private string GetStatusBasedOnQuantity(int quantity)
+        
+        public string GetStatusBasedOnQuantity(int quantity)
         {
             if (quantity == 0)
             {
@@ -82,19 +94,19 @@ namespace IMS.Services
             }
         }
 
-        public bool UpdateItem(int itemId, string name, int quantity, decimal price, string status)
+        public bool UpdateItem(int id, string name, int quantity, decimal price)
         {
             try
             {
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
-                    const string query = "UPDATE InventoryItems SET Name = @Name, Quantity = @Quantity, Price = @Price, Status = @Status WHERE ItemId = @ItemId";
+                    const string query = "UPDATE goods SET Name = @Name, Quantity = @Quantity, Price = @Price WHERE id = @id";
                     using (var command = new NpgsqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@id", id);
                         command.Parameters.AddWithValue("@Name", name);
                         command.Parameters.AddWithValue("@Quantity", quantity);
                         command.Parameters.AddWithValue("@Price", price);
-                        command.Parameters.AddWithValue("@Status", status);
 
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -115,10 +127,10 @@ namespace IMS.Services
             {
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
-                    const string query = "DELETE FROM InventoryItems WHERE ItemId = @ItemId";
+                    const string query = "DELETE FROM goods WHERE id = @id";
                     using (var command = new NpgsqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@ItemId", itemId);
+                        command.Parameters.AddWithValue("@id", itemId);
 
                         connection.Open();
                         command.ExecuteNonQuery();

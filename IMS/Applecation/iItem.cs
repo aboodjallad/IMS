@@ -8,10 +8,12 @@ namespace IMS.Applecation
 {
     internal interface iItem
     {
-        bool AddItem(string name, int quantity, decimal price, string status);
-        void GetItems();
-        bool UpdateItem(int itemId, string name, int quantity, decimal price, string status);
+        bool AddItem(string name, int quantity, decimal price);
+        List<Good> GetItems();
+        bool UpdateItem(int itemId, string name, int quantity, decimal price);
         bool DeleteItem(int itemId);
-        
+        string GetStatusBasedOnQuantity(int quantity);
+
+
     }
 }
