@@ -48,7 +48,7 @@ namespace IMS.Services
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
-                const string query = "SELECT * FROM InventoryItems";
+                const string query = "SELECT ItemId, Name, Quantity FROM InventoryItems";
                 using (var command = new NpgsqlCommand(query, connection))
                 {
                     connection.Open();
@@ -56,10 +56,29 @@ namespace IMS.Services
                     {
                         while (reader.Read())
                         {
-                            Console.WriteLine($"ID: {reader["ItemId"]}, Name: {reader["Name"]}, Quantity: {reader["Quantity"]}");
+                            int quantity = int.Parse(reader["Quantity"].ToString());
+                            string status = GetStatusBasedOnQuantity(quantity);
+
+                            Console.WriteLine($"ID: {reader["ItemId"]}, Name: {reader["Name"]}, Quantity: {quantity}, Status: {status}");
                         }
                     }
                 }
+            }
+        }
+
+        private string GetStatusBasedOnQuantity(int quantity)
+        {
+            if (quantity == 0)
+            {
+                return "Out of Stock";
+            }
+            else if (quantity > 0 && quantity <= 10) // Assuming 10 as the low stock threshold
+            {
+                return "Low Stock";
+            }
+            else
+            {
+                return "In Stock";
             }
         }
 

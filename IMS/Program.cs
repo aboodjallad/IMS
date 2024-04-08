@@ -16,6 +16,8 @@ namespace IMS
         {
             string connectionString = "Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123";
             var authService = new AuthService(connectionString);
+            var itemService = new ItemService(connectionString);
+
 
             // Example usage:
             // Register a new user
@@ -37,6 +39,9 @@ namespace IMS
             {
                 Console.WriteLine("Login failed.");
             }
+
+
+
 
             // Logout
             authService.Logout();
