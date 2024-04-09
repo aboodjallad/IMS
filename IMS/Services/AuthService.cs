@@ -20,7 +20,7 @@ namespace IMS.Services
             _connectionString = connectionString;
         }
 
-        public bool Register(string username, string password, int role)
+        public bool Register(string username, string password)
         {
 
             try
@@ -47,41 +47,45 @@ namespace IMS.Services
                     {
                         command.Parameters.AddWithValue("@username", username);
                         command.Parameters.AddWithValue("@password", passwordhashed);
-                        command.Parameters.AddWithValue("@role", role);
 
                         var result = command.ExecuteNonQuery();
+                        Console.WriteLine("Registration successful.");
                         return result == 1;
                     }
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Registration failed.");
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 return false;
             }
         }
 
-        public bool Login(string username, string password)
+        public int Login(string username, string password)
         {
+            int role=0;
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (var command = new NpgsqlCommand("SELECT password FROM users WHERE username = @Username", connection))
+                using (var command = new NpgsqlCommand("SELECT password, role FROM users WHERE username = @Username", connection))
                 {
-                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@Username", username);
 
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            string storedHash = reader.GetString(0);
-                            return BCrypt.Net.BCrypt.Verify(password, storedHash);
-
+                            string storedHash = reader.GetString(0); 
+                            role = Convert.ToInt32(reader["role"]); 
+                            Console.WriteLine("Login successful.");
+                            return role;
                         }
                         else
                         {
-                            return false;
+                            Console.WriteLine("Login failed.");
+                            return 0;
                         }
                     }
                 }

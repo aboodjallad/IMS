@@ -8,8 +8,8 @@ namespace IMS.Applecation
 {
     internal interface iAuth
     {
-        bool Register(string username, string password, int role);
-        bool Login(string username, string password);
+        bool Register(string username, string password);
+        int Login(string username, string password);
         void Logout();
     }
 }

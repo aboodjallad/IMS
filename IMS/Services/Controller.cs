@@ -4,9 +4,9 @@ using System.Net;
 using System.Text;
 using IMS.Applecation;
 using IMS.Services;
-using Newtonsoft.Json; // Assuming Newtonsoft.Json for JSON serialization/deserialization
-///*
-class Program
+using Newtonsoft.Json; 
+/*
+class Controller
 {
     static HttpListener listener;
     static ItemService items = new  ItemService("Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123");
@@ -24,35 +24,33 @@ class Program
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
 
-            switch (request.Url.AbsolutePath)
+            string path = request.Url.AbsolutePath.ToString();
+            if (path.Contains("/items/") && request.HttpMethod == "PUT")
             {
-                case "/items/12":
-                    if (request.HttpMethod == "PUT")
-                    {
-                        Update(context);
-                    }
-                    else if (request.HttpMethod == "DELETE")
-                    {
-                        Delete(context);
-                    }
-                    break;
-                case "/item":
-                    if (request.HttpMethod == "POST")
-                    {
-                        Add(context);
-                    }
-                    else if (request.HttpMethod == "GET")
-                    {
-                        Get(context);
-                    }
-                    break;
-                
-                default:
-                    response.StatusCode = 404;
-                    break;
+                Update(context);
+            }
+            else if (path.Contains("/items/") && request.HttpMethod == "DELETE")
+            {
+                Delete(context);
+            }
+            else if (path.Contains("/item") && request.HttpMethod == "POST")
+            {
+                Add(context);
+            }
+            else if (path.Contains("/item") && request.HttpMethod == "GET")
+            {
+                Get(context);
+            }
+            else if (path.Contains("/item/") && request.HttpMethod == "GET")
+            {
+                Get(context);
+            }
+            else
+            {
+                response.StatusCode = 404;
+
             }
 
-            // Always close the response stream
             response.OutputStream.Close();
         }
     }
@@ -84,6 +82,7 @@ class Program
             context.Response.StatusCode = 200;
             foreach (var item in itemsList)
             {
+
                 Console.WriteLine(item.ToString());
             }
         }

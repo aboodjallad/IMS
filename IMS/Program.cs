@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace IMS
-{/*
+{///*
     class Program
     {
         static void Main(string[] args)
@@ -17,79 +17,131 @@ namespace IMS
             string connectionString = "Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123";
             var authService = new AuthService(connectionString);
             var itemService = new ItemService(connectionString);
-            static int ExtractIdFromUrl(string url)
+
+
+            Console.WriteLine("Welcome to the Inventory Management System");
+            Console.WriteLine("\n(1) Login \n (2) Register");
+            Console.Write("Enter your choice: ");
+            string command = Console.ReadLine();
+            bool isParsed = int.TryParse(command, out int choice);
+
+            if (!isParsed)
             {
-                var segments = url.Split('/');
-                if (segments.Length >= 3)
+                Console.WriteLine("Please enter a valid integer.");
+            }
+            string username="";
+            string password="";
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Enter your username :");
+                    username = Console.ReadLine();
+                    Console.WriteLine("Enter your password");
+                    password = Console.ReadLine();
+                    authService.Login(username, password);
+                    break;
+                case 2:
+                    Console.WriteLine("Enter your username :");
+                    username = Console.ReadLine();
+                    Console.WriteLine("Enter your password");
+                    password = Console.ReadLine();
+                    authService.Register(username, password);
+                    break;
+
+                default:
+                    Console.WriteLine("Unknown command. Type 'help' for available commands.");
+                    break;
+            }
+            while (true)
+            {
+                
+                Console.WriteLine("\nWhat do u want to do :)  :");
+                Console.WriteLine("\n(1) Add an item \n (2) Delete an item \n (3) Update an item \n(4) Search \n (5) Logout ");
+                Console.Write("Enter your choice: ");
+                command = Console.ReadLine();
+                isParsed = int.TryParse(command, out  choice);
+
+                if (!isParsed)
                 {
-                    var idSegment = segments[segments.Length - 1];
-                    if (int.TryParse(idSegment, out int itemId))
-                    {
-                        return itemId;
-                    }
+                    Console.WriteLine("Please enter a valid integer.");
                 }
-                throw new ArgumentException("Invalid URL format or missing item ID.");
-            }
 
-            // Example usage:
-            // Register a new user
-            if (authService.Register("Jallad1", "aboodjallad12345", 1))
-            {
-                Console.WriteLine("Registration successful.");
-            }
-            else
-            {
-                Console.WriteLine("Registration failed.");
-            }
+                switch (choice)
+                {
+                    case 1:
 
-            // Login
-            if (authService.Login("Jallad1", "aboodjallad12345"))
-            {
-                Console.WriteLine("Login successful.");
+                        Console.WriteLine("Enter item name :");
+                        var name = Console.ReadLine();
+                        Console.WriteLine("Enter item quantity");
+                        var quantity = Console.ReadLine();
+                        isParsed = int.TryParse(quantity, out int newQuantity);
+                        Console.WriteLine("Enter item price");
+                        var price = Console.ReadLine();
+                        isParsed = int.TryParse(price, out int newPrice);
+                        Console.WriteLine("Enter item category");
+                        var category = Console.ReadLine();
+                        itemService.AddItem(name, newQuantity,newPrice,category);
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Enter item id");
+                        var id = Console.ReadLine();
+                        isParsed = int.TryParse(id, out int newId);
+                        itemService.DeleteItem(newId, authService.Login(username,password));
+                        break;
+                    
+                    case 3:
+
+                    default:
+                        Console.WriteLine("Unknown command. Type 'help' for available commands.");
+                        break;
+                }
+
             }
-            else
-            {
-                Console.WriteLine("Login failed.");
-            }
-
-
-            if(itemService.AddItem("abood", 122121212, 15000000))
-            {
-                Console.WriteLine("Item added successfuly");
-            }
-            else
-            {
-                Console.WriteLine("Add failed"); 
-            }
-
-            if (itemService.DeleteItem(1))
-            {
-                Console.WriteLine("Item deleted successfuly");
-            }
-            else
-            {
-                Console.WriteLine("Delete failed");
-            }
-
-            if (itemService.UpdateItem(500, "koko", 123,4))
-            {
-                Console.WriteLine("Item updated successfuly");
-            }
-            else
-            {
-                Console.WriteLine("Update failed");
-            }
-
-            itemService.GetItems();
-
-            Console.WriteLine(ExtractIdFromUrl("http://localhost:5000/items/1049"));
-            
-
-
-
-            // Logout
-            authService.Logout();
         }
-    }*/
+
+        //authService.Register("Jallad123", "aboodjallad12345");
+
+
+        //authService.Login("Jallad1", "aboodjallad12345");
+
+        /*
+
+                    if(itemService.AddItem("mooooooz", 122121212, 1, "gooooooooooooooooooooooooool"))
+                    {
+                        Console.WriteLine("Item added successfuly");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Add failed"); 
+                    }
+
+                    if (itemService.DeleteItem(1))
+                    {
+                        Console.WriteLine("Item deleted successfuly");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Delete failed");
+                    }
+        */
+        /*if (itemService.UpdateItem(500, "koko", 123,4, authService.Login("Jallad1", "aboodjallad12345")))
+        {
+            Console.WriteLine("Item updated successfuly");
+        }
+        else
+        {
+            Console.WriteLine("Update failed");
+        }
+
+        //itemService.GetItems();
+
+
+        //itemService.SearchByPriceDESC();
+
+        authService.Logout();
+    }
+}//*/
+    }
 }
 
