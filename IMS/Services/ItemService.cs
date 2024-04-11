@@ -280,7 +280,7 @@ namespace IMS.Services
                 }
                 else
                 {
-                    Console.WriteLine("Access Denied");
+                    Console.WriteLine("Access Denied Only Admins Can Update And Delete.");
                     return false;
                 }
             }
@@ -340,7 +340,7 @@ namespace IMS.Services
                 }
                 else
                 {
-                    Console.WriteLine("Access Denied");
+                    Console.WriteLine("Access Denied Only Admins Can Update And Delete.");
                     return false;
                 }
             }

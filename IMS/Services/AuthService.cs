@@ -41,10 +41,12 @@ namespace IMS.Services
                         }
                     }
 
-                    using (var command = new NpgsqlCommand("INSERT INTO Users (username, password ) VALUES (@username, @password)", connection))
+                    using (var command = new NpgsqlCommand("INSERT INTO Users (username, password ,role) VALUES (@username, @password,@role)", connection))
                     {
                         command.Parameters.AddWithValue("@username", username);
                         command.Parameters.AddWithValue("@password", passwordhashed);
+                        command.Parameters.AddWithValue("@role", 2);
+
 
                         var result = command.ExecuteNonQuery();
                         Console.WriteLine("Registration successful.");
@@ -69,7 +71,7 @@ namespace IMS.Services
 
         public int Login(string username, string password)
         {
-            int role=0;
+            int role;
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();

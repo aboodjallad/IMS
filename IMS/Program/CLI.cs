@@ -94,8 +94,8 @@ namespace IMS.Program
                         Console.WriteLine("Enter your password");
                         password = Console.ReadLine();
                         
-                        x= authService.GetRole(username, password);
-                        if( x == 0)
+                        x = authService.GetRole(username, password);
+                        if(x == 0)
                         {
                             Console.WriteLine("Login failed. Try to login with valid username and password");
                             return;
