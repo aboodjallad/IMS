@@ -8,21 +8,63 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace IMS.Services
+/*
+namespace IMS.Program
 {
-    internal class Controller
+    internal class API
     {
+
+
+        static HttpListener listener;
         static ItemService items = new ItemService("Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123");
 
-        public void Add(HttpListenerContext context)
+        public API()
+        {
+            while (true)
+            {
+                HttpListenerContext context = listener.GetContext();
+                HttpListenerRequest request = context.Request;
+                HttpListenerResponse response = context.Response;
+
+                string path = request.Url.AbsolutePath.ToString();
+                if (path.Contains("/items/") && request.HttpMethod == "PUT")
+                {
+                    Update(context);
+                }
+                else if (path.Contains("/items/") && request.HttpMethod == "DELETE")
+                {
+                    Delete(context);
+                }
+                else if (path.Contains("/item") && request.HttpMethod == "POST")
+                {
+                    Add(context);
+                }
+                else if (path.Contains("/item") && request.HttpMethod == "GET")
+                {
+                    Get(context);
+                }
+                else if (path.Contains("/item/") && request.HttpMethod == "GET")
+                {
+                    Get(context);
+                }
+                else
+                {
+                    response.StatusCode = 404;
+
+                }
+
+                response.OutputStream.Close();
+            }
+        }
+        
+        static void Add(HttpListenerContext context)
         {
             try
             {
                 var request = context.Request;
                 Good item = DeserializeJson<Good>(request.InputStream);
 
-                items.AddItem(item.Name, item.Quantity, item.Price, item.category);
+                items.AddItem(item.Name, item.Quantity, item.Price,item.category);
 
                 context.Response.StatusCode = 201;
             }
@@ -33,7 +75,7 @@ namespace IMS.Services
             }
         }
 
-        public void Get(HttpListenerContext context)
+        static void Get(HttpListenerContext context)
         {
             try
             {
@@ -52,7 +94,7 @@ namespace IMS.Services
                 WriteResponse(context, ex.Message);
             }
         }
-        public void Update(HttpListenerContext context)
+        static void Update(HttpListenerContext context)
         {
             try
             {
@@ -80,7 +122,7 @@ namespace IMS.Services
                 Console.WriteLine(context.ToString(), ex.Message);
             }
         }
-        public  int ExtractIdFromUrl(string url)
+        private static int ExtractIdFromUrl(string url)
         {
             var segments = url.Split('/');
             if (segments.Length >= 3)
@@ -95,7 +137,7 @@ namespace IMS.Services
         }
 
 
-        public void Delete(HttpListenerContext context)
+        static void Delete(HttpListenerContext context)
         {
             try
             {
@@ -122,7 +164,7 @@ namespace IMS.Services
         }
 
 
-        public T DeserializeJson<T>(Stream stream)
+        static T DeserializeJson<T>(Stream stream)
         {
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
@@ -131,7 +173,7 @@ namespace IMS.Services
             }
         }
 
-        public void WriteResponse(HttpListenerContext context, string responseString)
+        static void WriteResponse(HttpListenerContext context, string responseString)
         {
             var buffer = Encoding.UTF8.GetBytes(responseString);
             context.Response.ContentLength64 = buffer.Length;
@@ -139,3 +181,4 @@ namespace IMS.Services
         }
     }
 }
+*/

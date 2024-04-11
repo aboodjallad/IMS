@@ -11,7 +11,9 @@ namespace IMS.Applecation
         bool AddItem(string name, int quantity, decimal price, string category);
         List<Good> GetItems();
         bool UpdateItem(int itemId, string name, int quantity, decimal price,int role);
+        bool UpdateItem(int itemId, string name, int quantity, decimal price);
         bool DeleteItem(int itemId, int role);
+        bool DeleteItem(int itemId);
         string GetStatusBasedOnQuantity(int quantity);
         public void SearchByName(string searchName);
         public void SearchByCategory(string category);

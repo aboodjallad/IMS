@@ -25,7 +25,7 @@ namespace IMS.Services
             {
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
-                    const string query = "INSERT INTO goods (Name, Quantity, Price , category) VALUES (@Name,  @Quantity,  @Price, @Category)";
+                    const string query = "INSERT INTO goods (Name,Quantity,Price,Category) VALUES (@Name,  @Quantity,  @Price, @Category)";
                     using (var command = new NpgsqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Name", name);
@@ -35,6 +35,8 @@ namespace IMS.Services
 
                         connection.Open();
                         command.ExecuteNonQuery();
+                        Console.WriteLine("Item have been added successfully");
+
                         return true;
                     }
                 }
@@ -271,6 +273,7 @@ namespace IMS.Services
 
                             connection.Open();
                             command.ExecuteNonQuery();
+                            Console.WriteLine("Item updated successfully");
                             return true;
                         }
                     }
@@ -280,6 +283,34 @@ namespace IMS.Services
                     Console.WriteLine("Access Denied");
                     return false;
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool UpdateItem(int id, string name, int quantity, decimal price)
+        {
+            try
+            {
+                    using (var connection = new NpgsqlConnection(_connectionString))
+                    {
+                        const string query = "UPDATE goods SET Name = @Name, Quantity = @Quantity, Price = @Price WHERE id = @id";
+                        using (var command = new NpgsqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@id", id);
+                            command.Parameters.AddWithValue("@Name", name);
+                            command.Parameters.AddWithValue("@Quantity", quantity);
+                            command.Parameters.AddWithValue("@Price", price);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("Item updated successfully");
+                        return true;
+                        }
+                    }
             }
             catch (Exception ex)
             {
@@ -302,6 +333,7 @@ namespace IMS.Services
 
                             connection.Open();
                             command.ExecuteNonQuery();
+                            Console.WriteLine("Item deleted successfully");
                             return true;
                         }
                     }
@@ -318,7 +350,32 @@ namespace IMS.Services
                 return false;
             }
         }
+        public bool DeleteItem(int itemId)
+        {
+            try
+            {
+                    using (var connection = new NpgsqlConnection(_connectionString))
+                    {
+                        const string query = "DELETE FROM goods WHERE id = @id";
+                        using (var command = new NpgsqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@id", itemId);
 
-       
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("Item deleted successfully");
+                        return true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+
+
     }
 }

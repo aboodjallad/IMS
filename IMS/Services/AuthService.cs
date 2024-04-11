@@ -43,7 +43,7 @@ namespace IMS.Services
                         }
                     }
 
-                    using (var command = new NpgsqlCommand("INSERT INTO Users (username, password , role) VALUES (@username, @password, @role)", connection))
+                    using (var command = new NpgsqlCommand("INSERT INTO Users (username, password ) VALUES (@username, @password)", connection))
                     {
                         command.Parameters.AddWithValue("@username", username);
                         command.Parameters.AddWithValue("@password", passwordhashed);
@@ -62,6 +62,13 @@ namespace IMS.Services
             }
         }
 
+        public int GetRole(string username , string password)
+        { 
+            int role = Login(username,password);
+            return role;
+        }
+
+
         public int Login(string username, string password)
         {
             int role=0;
@@ -79,12 +86,10 @@ namespace IMS.Services
                         {
                             string storedHash = reader.GetString(0); 
                             role = Convert.ToInt32(reader["role"]); 
-                            Console.WriteLine("Login successful.");
                             return role;
                         }
                         else
                         {
-                            Console.WriteLine("Login failed.");
                             return 0;
                         }
                     }
