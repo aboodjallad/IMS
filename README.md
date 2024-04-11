@@ -6,7 +6,6 @@ The Inventory Management System (IMS) is a versatile application designed for sm
 ## Key Features
 - **Real-time Inventory Tracking**: Monitors stock levels to reflect current inventory, including sales and restocks.
 - **Automated Order Management**: Streamlines order processing from placement to fulfillment, enhancing efficiency.
-- **Sales and Inventory Reports**: Provides comprehensive reports on sales trends, inventory turnover, and order statuses.
 - **User Access Control**: Implements role-based access control (RBAC) to manage system permissions securely.
 
 ## Installation
@@ -15,3 +14,19 @@ The Inventory Management System (IMS) is a versatile application designed for sm
    ```bash
    git clone https://github.com/aboodjallad/IMS.git
    cd IMS
+# Install dependencies 
+```bash
+
+dotnet restore
+```
+
+# To start the application 
+```bash
+dotnet run
+```
+## Ensure the database connection string in appsettings.json matches your PostgreSQL setup:
+```bash
+"ConnectionStrings": {
+    "DefaultConnection": "Host=localhost; Port=5432; Database=ims; Username=postgres; Password=password;"
+}
+
