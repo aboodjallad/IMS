@@ -9,8 +9,6 @@ using Npgsql;
 namespace IMS.Services
 {
 
-
-
     public class AuthService : iAuth
     {
         private readonly string _connectionString;

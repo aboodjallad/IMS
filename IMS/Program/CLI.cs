@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace IMS.Program
-{///*
+{
     class CLI
     {
         static void Main(string[] args)
@@ -109,12 +109,19 @@ namespace IMS.Program
                         username = Console.ReadLine();
                         Console.WriteLine("Enter your password");
                         password = Console.ReadLine();
-                        authService.Register(username, password);
-                        break;
+                        if (! authService.Register(username, password))
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Go back and log in");
+                            return;
+                        }
 
                     default:
                         Console.WriteLine("Unknown command. Type 'help' for available commands.");
-                        break;
+                        return;
                 }
                 while (true)
                 {

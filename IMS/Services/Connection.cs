@@ -18,13 +18,13 @@ namespace IMS.Services
         private readonly NpgsqlConnection _connection;
         private static readonly object _lock = new object();
 
-        private DatabaseConnection(string connectionString)
+        private DatabaseConnection()
         {
-            _connection = new NpgsqlConnection(connectionString);
+            _connection = new NpgsqlConnection("Host=localhost; Port=5432; Database=ims; Username=postgres; Password=123");
             _connection.Open();
         }
 
-        public static DatabaseConnection GetInstance(string connectionString)
+        public static DatabaseConnection GetInstance()
         {
             
             {
@@ -34,7 +34,7 @@ namespace IMS.Services
                     {
                         if (_instance == null)
                         {
-                            _instance = new DatabaseConnection(connectionString);
+                            _instance = new DatabaseConnection();
                         }
                     }
                 }
